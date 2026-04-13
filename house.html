@@ -3,32 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>내 집 마련 시뮬레이터</title>
+<title>주택담보대출 시뮬레이터</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif;background:#F2F2F7;color:#18181B;min-height:100vh}
-nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.75}
+nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.7}
 .nb{font-size:11px;color:#ccc;font-weight:600}
 .wrap{max-width:960px;margin:0 auto;padding:32px 24px}
-.ph{margin-bottom:26px}.ph h1{font-size:25px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
-.card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.ph{margin-bottom:26px}.ph h1{font-size:24px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
+.card{background:#fff;border-radius:18px;padding:30px;box-shadow:0 1px 6px rgba(0,0,0,.07);margin-bottom:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:30px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 @media(max-width:660px){.g2,.g3{grid-template-columns:1fr}}
-.st{background:#F7F7FC;border-radius:12px;padding:14px 18px;text-align:center}
+.st{background:#F7F7FC;border-radius:12px;padding:15px 18px;text-align:center}
 .lb{font-size:11px;color:#aaa;margin-bottom:6px;font-weight:600}
-.vl{font-size:17px;font-weight:800}
-.fg{margin-bottom:17px}
-.fl{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#555;margin-bottom:7px}
+.vl{font-size:16px;font-weight:800}
+.fg{margin-bottom:18px}
+.fl{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:#555;margin-bottom:8px}
 .fl em{color:#4B45C4;font-style:normal;font-weight:800}
-input[type=range]{width:100%;height:5px;-webkit-appearance:none;background:#E8E8F0;border-radius:3px;outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:#4B45C4;box-shadow:0 2px 6px rgba(75,69,196,.3);cursor:pointer}
-input[type=number]{width:100%;padding:10px 14px;border:1.5px solid #E8E8F0;border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:#18181B}
+input[type=range]{width:100%;height:5px;-webkit-appearance:none;appearance:none;background:#E8E8F0;border-radius:3px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#4B45C4;box-shadow:0 2px 8px rgba(75,69,196,.35);cursor:pointer}
+input[type=number]{width:100%;padding:11px 15px;border:1.5px solid #E8E8F0;border-radius:11px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:#18181B}
 input[type=number]:focus{border-color:#4B45C4}
-.rp{background:#F0F0FF;border:1.5px solid #DDDCFF;border-radius:12px;padding:16px 20px;margin-top:16px}
-footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
+.rp{background:#F0F0FF;border:1.5px solid #DDDCFF;border-radius:13px;padding:18px 20px;margin-top:18px}
+.sec-lbl{font-size:11px;font-weight:800;color:#aaa;margin-bottom:10px;letter-spacing:.04em}
+footer{text-align:center;padding:28px;font-size:11px;color:#ccc}
 </style>
 </head>
 <body>
@@ -38,8 +39,8 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
 </nav>
 <div class="wrap">
   <div class="ph">
-    <h1>🏠 내 집 마련 시뮬레이터</h1>
-    <p>대출 조건을 설정하면 월 상환액·총이자·잔액 추이를 실시간으로 시각화합니다</p>
+    <h1>🏠 주택담보대출 시뮬레이터</h1>
+    <p>대출 조건을 설정하면 월 상환액·총이자·연도별 잔액 추이를 실시간으로 확인합니다</p>
   </div>
   <div class="card">
     <div class="g2">
@@ -50,7 +51,7 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
         <div class="fg"><div class="fl">상환 기간 <em id="hy-v">30년</em></div><input type="range" id="hy" min="5" max="40" step="1" value="30" oninput="calc()"></div>
         <div class="rp">
           <div class="g3">
-            <div class="st"><div class="lb">대출금액</div><div class="vl" id="h-loan">-</div></div>
+            <div class="st"><div class="lb">대출 금액</div><div class="vl" id="h-loan">-</div></div>
             <div class="st"><div class="lb">월 상환액</div><div class="vl" id="h-mon" style="color:#4B45C4">-</div></div>
             <div class="st"><div class="lb">총 이자</div><div class="vl" id="h-int" style="color:#D85A30">-</div></div>
           </div>
@@ -58,17 +59,18 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
         </div>
       </div>
       <div>
-        <div style="position:relative;height:200px;margin-bottom:14px"><canvas id="chD" role="img" aria-label="원금 대 이자 도넛 차트">원금 이자 비율</canvas></div>
-        <div style="font-size:11px;font-weight:700;color:#aaa;margin-bottom:8px">연도별 대출 잔액 추이</div>
-        <div style="position:relative;height:165px"><canvas id="chL" role="img" aria-label="대출 잔액 변화 추이 꺾은선 차트">잔액 추이</canvas></div>
+        <div class="sec-lbl">원금 vs 총 이자 비율</div>
+        <div style="position:relative;height:195px;margin-bottom:18px"><canvas id="chD" role="img" aria-label="원금 대 이자 도넛 차트">원금 이자 비율</canvas></div>
+        <div class="sec-lbl">연도별 대출 잔액 추이</div>
+        <div style="position:relative;height:160px"><canvas id="chL" role="img" aria-label="대출 잔액 변화 꺾은선 차트">잔액 추이</canvas></div>
       </div>
     </div>
   </div>
 </div>
-<footer>Claude AI · 직장인 스마트 대시보드 2025</footer>
+<footer>Made with Claude AI · 직장인 스마트 대시보드 2025</footer>
 <script>
 let chD,chL;
-function fw(n){if(Math.abs(n)>=100000000){const ok=Math.floor(n/100000000);const man=Math.round((Math.abs(n)%100000000)/10000);return man>0?ok+'억 '+man.toLocaleString()+'만원':ok+'억원';}if(Math.abs(n)>=10000)return Math.round(n/10000).toLocaleString()+'만원';return Math.round(n).toLocaleString()+'원';}
+function fw(n){if(Math.abs(n)>=100000000){const a=Math.floor(n/100000000);const b=Math.round((Math.abs(n)%100000000)/10000);return b>0?a+'억 '+b.toLocaleString()+'만원':a+'억원';}if(Math.abs(n)>=10000)return Math.round(n/10000).toLocaleString()+'만원';return Math.round(n).toLocaleString()+'원';}
 function fs(n){if(Math.abs(n)>=100000000)return(n/100000000).toFixed(1)+'억';if(Math.abs(n)>=10000)return Math.round(n/10000).toLocaleString()+'만';return Math.round(n).toLocaleString();}
 function calc(){
   const price=parseFloat(document.getElementById('hp').value)||0;
@@ -86,18 +88,18 @@ function calc(){
   document.getElementById('h-loan').textContent=fw(loan);
   document.getElementById('h-mon').textContent=fs(mon)+'원';
   document.getElementById('h-int').textContent=fw(totalInt);
-  document.getElementById('h-sub').textContent='총 상환액 '+fw(mon*n)+' · 대출 비율 '+Math.round(loan/price*100)+'%';
+  document.getElementById('h-sub').textContent='총 상환액 '+fw(mon*n)+' · 대출 비율 '+Math.round(loan/Math.max(price,1)*100)+'%';
   if(chD)chD.destroy();
-  chD=new Chart(document.getElementById('chD'),{type:'doughnut',data:{labels:['원금','총 이자'],datasets:[{data:[loan,totalInt],backgroundColor:['#4B45C4','#F4B93A'],borderWidth:2.5,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:13,font:{size:11},padding:10}},tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+fw(ctx.raw)}}}}});
-  const yLabels=['시작'],bals=[loan];
+  chD=new Chart(document.getElementById('chD'),{type:'doughnut',data:{labels:['원금','총 이자'],datasets:[{data:[loan,totalInt],backgroundColor:['#4B45C4','#F4B93A'],borderWidth:2.5,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,font:{size:11},padding:10}},tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+fw(ctx.raw)}}}}});
+  const yL=['시작'],bals=[loan];
   let bal=loan;
   for(let y=1;y<=Math.min(years,40);y++){
-    for(let m=0;m<12;m++){bal-=(mon-bal*rm);}
-    yLabels.push(y+'년');
+    for(let m=0;m<12;m++) bal-=(mon-bal*rm);
+    yL.push(y+'년');
     bals.push(Math.max(0,Math.round(bal)));
   }
   if(chL)chL.destroy();
-  chL=new Chart(document.getElementById('chL'),{type:'line',data:{labels:yLabels,datasets:[{label:'대출 잔액',data:bals,borderColor:'#4B45C4',backgroundColor:'rgba(75,69,196,.09)',fill:true,tension:.4,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' 잔액: '+fw(ctx.raw)}}},scales:{y:{ticks:{callback:v=>fs(v),font:{size:10}},grid:{color:'#F0F0F6'}},x:{ticks:{font:{size:10},maxTicksLimit:9},grid:{display:false}}}}});
+  chL=new Chart(document.getElementById('chL'),{type:'line',data:{labels:yL,datasets:[{label:'대출 잔액',data:bals,borderColor:'#4B45C4',backgroundColor:'rgba(75,69,196,.09)',fill:true,tension:.4,pointRadius:2,pointBackgroundColor:'#4B45C4'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' 잔액: '+fw(ctx.raw)}}},scales:{y:{ticks:{callback:v=>fs(v),font:{size:10}},grid:{color:'#F0F0F6'}},x:{ticks:{font:{size:10},maxTicksLimit:9},grid:{display:false}}}}});
 }
 calc();
 </script>

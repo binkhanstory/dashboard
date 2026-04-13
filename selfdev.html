@@ -8,18 +8,21 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif;background:#F2F2F7;color:#18181B;min-height:100vh}
-nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.75}
+nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.7}
 .nb{font-size:11px;color:#ccc;font-weight:600}
 .wrap{max-width:960px;margin:0 auto;padding:32px 24px}
-.ph{margin-bottom:26px}.ph h1{font-size:25px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
-.card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.ph{margin-bottom:26px}.ph h1{font-size:24px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
+.card{background:#fff;border-radius:18px;padding:30px;box-shadow:0 1px 6px rgba(0,0,0,.07);margin-bottom:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:30px}
 @media(max-width:660px){.g2{grid-template-columns:1fr}}
 input[type=number]{width:100%;padding:10px 14px;border:1.5px solid #E8E8F0;border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:#18181B;text-align:center}
 input[type=number]:focus{border-color:#4B45C4}
-.rp{background:#F0F0FF;border:1.5px solid #DDDCFF;border-radius:12px;padding:22px 20px;margin-top:18px;text-align:center}
-footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
+.rp{background:#F0F0FF;border:1.5px solid #DDDCFF;border-radius:13px;padding:24px 20px;margin-top:18px;text-align:center}
+.row{display:grid;grid-template-columns:1fr 88px 88px;gap:8px;align-items:center;margin-bottom:13px}
+.row-lbl{font-size:13px;font-weight:700}
+.col-lbl{font-size:10px;color:#bbb;text-align:center;margin-bottom:4px;font-weight:700}
+footer{text-align:center;padding:28px;font-size:11px;color:#ccc}
 </style>
 </head>
 <body>
@@ -35,12 +38,12 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
   <div class="card">
     <div class="g2">
       <div>
-        <div style="font-size:12px;color:#bbb;margin-bottom:18px;line-height:1.7">각 항목의 이번 주 목표 횟수와 실제 달성 횟수를 입력하세요</div>
+        <div style="font-size:12px;color:#bbb;margin-bottom:18px;line-height:1.8">각 항목의 이번 주 목표 횟수와 실제 달성 횟수를 입력하세요</div>
         <div id="rows"></div>
         <div class="rp">
-          <div style="font-size:11px;color:#aaa;margin-bottom:8px;font-weight:700">이번 주 전체 달성률</div>
-          <div style="font-size:52px;font-weight:900;color:#4B45C4;line-height:1" id="pct">0%</div>
-          <div style="font-size:13px;color:#bbb;margin-top:10px" id="det">0 / 0 완료</div>
+          <div style="font-size:11px;color:#aaa;margin-bottom:10px;font-weight:700">이번 주 전체 달성률</div>
+          <div style="font-size:54px;font-weight:900;color:#4B45C4;line-height:1" id="pct">0%</div>
+          <div style="font-size:13px;color:#bbb;margin-top:12px" id="det">0 / 0 완료</div>
         </div>
       </div>
       <div>
@@ -48,27 +51,27 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
           <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:#E8E8F0;display:inline-block"></span>목표</span>
           <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:#4B45C4;display:inline-block"></span>달성</span>
         </div>
-        <div style="position:relative;height:320px"><canvas id="ch" role="img" aria-label="자기계발 항목별 목표 대비 달성 막대 차트">자기계발 달성률</canvas></div>
+        <div style="position:relative;height:320px"><canvas id="ch" role="img" aria-label="자기계발 항목별 목표 대비 달성 막대 차트">자기계발 달성률 차트</canvas></div>
       </div>
     </div>
   </div>
 </div>
-<footer>Claude AI · 직장인 스마트 대시보드 2025</footer>
+<footer>Made with Claude AI · 직장인 스마트 대시보드 2025</footer>
 <script>
 const ITEMS=[
   {label:'📖 독서',goal:3,done:1},
   {label:'🎓 강의 수강',goal:5,done:3},
   {label:'🏃 운동',goal:5,done:4},
   {label:'🌏 어학 공부',goal:3,done:2},
-  {label:'🧘 명상 · 루틴',goal:7,done:5},
+  {label:'🧘 명상·루틴',goal:7,done:5},
 ];
 let ch;
 function build(){
   document.getElementById('rows').innerHTML=ITEMS.map((it,i)=>
-    '<div style="display:grid;grid-template-columns:1fr 88px 88px;gap:8px;align-items:center;margin-bottom:13px">'+
-    '<div style="font-size:13px;font-weight:700">'+it.label+'</div>'+
-    '<div><div style="font-size:10px;color:#bbb;text-align:center;margin-bottom:4px;font-weight:700">목표 (회/주)</div><input type="number" id="dg'+i+'" value="'+it.goal+'" min="0" max="30" oninput="calc()"></div>'+
-    '<div><div style="font-size:10px;color:#bbb;text-align:center;margin-bottom:4px;font-weight:700">달성 (회)</div><input type="number" id="dd'+i+'" value="'+it.done+'" min="0" max="30" oninput="calc()"></div>'+
+    '<div class="row">'+
+    '<div class="row-lbl">'+it.label+'</div>'+
+    '<div><div class="col-lbl">목표 (회/주)</div><input type="number" id="dg'+i+'" value="'+it.goal+'" min="0" max="30" oninput="calc()"></div>'+
+    '<div><div class="col-lbl">달성 (회)</div><input type="number" id="dd'+i+'" value="'+it.done+'" min="0" max="30" oninput="calc()"></div>'+
     '</div>'
   ).join('');
 }
@@ -82,7 +85,16 @@ function calc(){
   document.getElementById('pct').textContent=tp+'%';
   document.getElementById('det').textContent=td+' / '+tg+' 완료';
   if(ch)ch.destroy();
-  ch=new Chart(document.getElementById('ch'),{type:'bar',data:{labels:ITEMS.map(d=>d.label),datasets:[{label:'목표',data:goals,backgroundColor:'rgba(232,232,240,.9)',borderRadius:7,borderSkipped:false},{label:'달성',data:dones,backgroundColor:pcts.map(p=>p>=100?'#1D9E75':p>=60?'#4B45C4':'#F4B93A'),borderRadius:7,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const i=ctx.dataIndex;return ctx.dataset.label==='달성'?' '+dones[i]+'회 ('+pcts[i]+'%)'>' 목표 '+goals[i]+'회';}}}},scales:{y:{ticks:{font:{size:10}},grid:{color:'#F0F0F6'}},x:{ticks:{font:{size:12}},grid:{display:false}}}}});
+  ch=new Chart(document.getElementById('ch'),{
+    type:'bar',
+    data:{labels:ITEMS.map(d=>d.label),datasets:[
+      {label:'목표',data:goals,backgroundColor:'rgba(232,232,240,.9)',borderRadius:7,borderSkipped:false},
+      {label:'달성',data:dones,backgroundColor:pcts.map(p=>p>=100?'#1D9E75':p>=60?'#4B45C4':'#F4B93A'),borderRadius:7,borderSkipped:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const i=ctx.dataIndex;return ctx.dataset.label==='달성'?' '+dones[i]+'회 ('+pcts[i]+'%)'>' 목표 '+goals[i]+'회';}}}},
+      scales:{y:{ticks:{font:{size:10}},grid:{color:'#F0F0F6'}},x:{ticks:{font:{size:12}},grid:{display:false}}}}
+  });
 }
 build();
 calc();

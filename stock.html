@@ -3,33 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>주식 투자 계산기</title>
+<title>복리 투자 성장 계산기</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif;background:#F2F2F7;color:#18181B;min-height:100vh}
-nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.75}
+nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.7}
 .nb{font-size:11px;color:#ccc;font-weight:600}
 .wrap{max-width:960px;margin:0 auto;padding:32px 24px}
-.ph{margin-bottom:26px}.ph h1{font-size:25px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
-.card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.ph{margin-bottom:26px}.ph h1{font-size:24px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
+.card{background:#fff;border-radius:18px;padding:30px;box-shadow:0 1px 6px rgba(0,0,0,.07);margin-bottom:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:30px}
 @media(max-width:660px){.g2{grid-template-columns:1fr}}
-.st{background:#F7F7FC;border-radius:12px;padding:14px 18px;text-align:center}
+.st{background:#F7F7FC;border-radius:12px;padding:15px 18px;text-align:center}
 .lb{font-size:11px;color:#aaa;margin-bottom:6px;font-weight:600}
-.vl{font-size:16px;font-weight:800}
-.fg{margin-bottom:17px}
-.fl{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#555;margin-bottom:7px}
+.vl{font-size:15px;font-weight:800}
+.fg{margin-bottom:18px}
+.fl{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:#555;margin-bottom:8px}
 .fl em{color:#4B45C4;font-style:normal;font-weight:800}
-input[type=range]{width:100%;height:5px;-webkit-appearance:none;background:#E8E8F0;border-radius:3px;outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:#4B45C4;box-shadow:0 2px 6px rgba(75,69,196,.3);cursor:pointer}
-input[type=number]{width:100%;padding:10px 14px;border:1.5px solid #E8E8F0;border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:#18181B}
+input[type=range]{width:100%;height:5px;-webkit-appearance:none;appearance:none;background:#E8E8F0;border-radius:3px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#4B45C4;box-shadow:0 2px 8px rgba(75,69,196,.35);cursor:pointer}
+input[type=number]{width:100%;padding:11px 15px;border:1.5px solid #E8E8F0;border-radius:11px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:#18181B}
 input[type=number]:focus{border-color:#4B45C4}
-.rp{background:#F0F0FF;border:1.5px solid #DDDCFF;border-radius:12px;padding:16px 20px;margin-top:16px}
-.divider{border-top:1.5px solid #F0F0F6;padding-top:16px;margin-top:6px}
-.cost-label{font-size:11px;font-weight:800;color:#bbb;margin-bottom:12px;letter-spacing:.05em}
-footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
+.rp{background:#F0F0FF;border:1.5px solid #DDDCFF;border-radius:13px;padding:18px 20px;margin-top:18px}
+.divider{border-top:1.5px solid #F0F0F6;padding-top:16px;margin-top:4px}
+.cost-lbl{font-size:11px;font-weight:800;color:#bbb;margin-bottom:12px;letter-spacing:.05em}
+footer{text-align:center;padding:28px;font-size:11px;color:#ccc}
 </style>
 </head>
 <body>
@@ -39,7 +39,7 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
 </nav>
 <div class="wrap">
   <div class="ph">
-    <h1>📈 주식 투자 계산기</h1>
+    <h1>📈 복리 투자 성장 계산기</h1>
     <p>거래세·수수료를 직접 설정하고 단순 복리 vs 국내주식 기준 자산 성장을 비교합니다</p>
   </div>
   <div class="card">
@@ -50,16 +50,16 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
         <div class="fg"><div class="fl">투자 기간 <em id="sy-v">10년</em></div><input type="range" id="sy" min="1" max="40" value="10" oninput="calc()"></div>
         <div class="fg"><div class="fl">기대 수익률 (연%) <em id="sr-v">8.0%</em></div><input type="range" id="sr" min="1" max="30" step="0.5" value="8" oninput="calc()"></div>
         <div class="divider">
-          <div class="cost-label">▸ 국내주식 거래비용 직접 설정 (B안)</div>
+          <div class="cost-lbl">▸ 국내주식 거래비용 직접 설정</div>
           <div class="fg"><div class="fl">거래세 (%) <em id="st-v">0.180%</em></div><input type="range" id="st" min="0" max="0.5" step="0.01" value="0.18" oninput="calc()"></div>
           <div class="fg"><div class="fl">증권사 수수료 (%) <em id="sf-v">0.015%</em></div><input type="range" id="sf" min="0" max="0.5" step="0.005" value="0.015" oninput="calc()"></div>
         </div>
         <div class="rp">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-            <div class="st"><div class="lb">단순 복리 최종</div><div class="vl" id="s-s" style="color:#4B45C4">-</div></div>
-            <div class="st"><div class="lb">국내주식 기준</div><div class="vl" id="s-k" style="color:#1D9E75">-</div></div>
+            <div class="st"><div class="lb">단순 복리 최종</div><div class="vl" id="ss" style="color:#4B45C4">-</div></div>
+            <div class="st"><div class="lb">국내주식 기준</div><div class="vl" id="sk" style="color:#1D9E75">-</div></div>
           </div>
-          <div style="font-size:12px;color:#888;text-align:center" id="s-d">계산 중...</div>
+          <div style="font-size:12px;color:#888;text-align:center" id="sd">계산 중...</div>
         </div>
       </div>
       <div>
@@ -67,15 +67,15 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
           <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:#4B45C4;display:inline-block"></span>단순 복리</span>
           <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:#1D9E75;display:inline-block"></span>국내주식 기준</span>
         </div>
-        <div style="position:relative;height:350px"><canvas id="ch" role="img" aria-label="단순복리 대 국내주식 자산 성장 비교 차트">자산 성장 비교 차트</canvas></div>
+        <div style="position:relative;height:360px"><canvas id="ch" role="img" aria-label="복리 투자 성장 비교 꺾은선 차트">자산 성장 비교</canvas></div>
       </div>
     </div>
   </div>
 </div>
-<footer>Claude AI · 직장인 스마트 대시보드 2025</footer>
+<footer>Made with Claude AI · 직장인 스마트 대시보드 2025</footer>
 <script>
 let ch;
-function fw(n){if(Math.abs(n)>=100000000){const ok=Math.floor(n/100000000);const man=Math.round((Math.abs(n)%100000000)/10000);return man>0?ok+'억 '+man.toLocaleString()+'만원':ok+'억원';}if(Math.abs(n)>=10000)return Math.round(n/10000).toLocaleString()+'만원';return Math.round(n).toLocaleString()+'원';}
+function fw(n){if(Math.abs(n)>=100000000){const a=Math.floor(n/100000000);const b=Math.round((Math.abs(n)%100000000)/10000);return b>0?a+'억 '+b.toLocaleString()+'만원':a+'억원';}if(Math.abs(n)>=10000)return Math.round(n/10000).toLocaleString()+'만원';return Math.round(n).toLocaleString()+'원';}
 function fs(n){if(Math.abs(n)>=100000000)return(n/100000000).toFixed(1)+'억';if(Math.abs(n)>=10000)return Math.round(n/10000).toLocaleString()+'만';return Math.round(n).toLocaleString();}
 function calc(){
   const init=parseFloat(document.getElementById('si').value)||0;
@@ -101,9 +101,9 @@ function calc(){
     labels.push(y+'년');
   }
   const fS=simple[simple.length-1],fK=korea[korea.length-1];
-  document.getElementById('s-s').textContent=fw(fS);
-  document.getElementById('s-k').textContent=fw(fK);
-  document.getElementById('s-d').textContent='거래비용 영향: 약 '+fw(fS-fK)+' 차이';
+  document.getElementById('ss').textContent=fw(fS);
+  document.getElementById('sk').textContent=fw(fK);
+  document.getElementById('sd').textContent='거래비용 영향: 약 '+fw(fS-fK)+' 차이';
   if(ch)ch.destroy();
   ch=new Chart(document.getElementById('ch'),{type:'line',data:{labels,datasets:[{label:'단순 복리',data:simple,borderColor:'#4B45C4',backgroundColor:'rgba(75,69,196,.09)',fill:true,tension:.4,pointRadius:2},{label:'국내주식 기준',data:korea,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,.07)',fill:true,tension:.4,pointRadius:2,borderDash:[7,4]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+fw(ctx.raw)}}},scales:{y:{ticks:{callback:v=>fs(v),font:{size:10}},grid:{color:'#F0F0F6'}},x:{ticks:{font:{size:10},maxTicksLimit:11},grid:{display:false}}}}});
 }

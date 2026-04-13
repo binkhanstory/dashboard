@@ -8,26 +8,25 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif;background:#F2F2F7;color:#18181B;min-height:100vh}
-nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none;display:flex;align-items:center;gap:5px}
-.bk:hover{opacity:.75}
+nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.7}
 .nb{font-size:11px;color:#ccc;font-weight:600}
 .wrap{max-width:960px;margin:0 auto;padding:32px 24px}
-.ph{margin-bottom:26px}
-.ph h1{font-size:25px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em}
-.ph p{font-size:13px;color:#999}
-.card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.ph{margin-bottom:26px}.ph h1{font-size:24px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
+.card{background:#fff;border-radius:18px;padding:30px;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:30px}
 @media(max-width:660px){.g2{grid-template-columns:1fr}}
-.fg{margin-bottom:17px}
-.fl{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#555;margin-bottom:7px}
-.fl em{color:#4B45C4;font-style:normal;font-weight:800}
-input[type=range]{width:100%;height:5px;-webkit-appearance:none;background:#E8E8F0;border-radius:3px;outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:#4B45C4;box-shadow:0 2px 6px rgba(75,69,196,.3);cursor:pointer}
-input[type=number]{width:100%;padding:10px 14px;border:1.5px solid #E8E8F0;border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:#18181B}
+.fg{margin-bottom:18px}
+.fl{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:#555;margin-bottom:8px}
+.fl em{color:#4B45C4;font-style:normal;font-weight:800;font-size:13px}
+input[type=range]{width:100%;height:5px;-webkit-appearance:none;appearance:none;background:#E8E8F0;border-radius:3px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#4B45C4;box-shadow:0 2px 8px rgba(75,69,196,.35);cursor:pointer}
+input[type=number]{width:100%;padding:11px 15px;border:1.5px solid #E8E8F0;border-radius:11px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:#18181B}
 input[type=number]:focus{border-color:#4B45C4}
-.warn{background:#FFF3F0;border:1px solid #FECCBC;border-radius:10px;padding:10px 14px;font-size:12px;color:#C94A22;display:none;margin-top:8px}
-footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
+.warn{background:#FFF3F0;border:1px solid #FECCBC;border-radius:10px;padding:11px 15px;font-size:12px;color:#C94A22;display:none;margin-top:10px}
+.leg-row{display:flex;align-items:center;gap:7px;font-size:12px;padding:3px 0}
+.leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+footer{text-align:center;padding:28px;font-size:11px;color:#ccc}
 </style>
 </head>
 <body>
@@ -47,7 +46,7 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
           <div class="fl">월 실수령액 (세후)</div>
           <input type="number" id="salary" value="3500000" oninput="calc()">
         </div>
-        <div style="font-size:11px;color:#bbb;margin:-8px 0 18px;line-height:1.7">슬라이더로 비율을 조정하세요 · 합계 100% 맞추기</div>
+        <div style="font-size:11px;color:#bbb;margin:-10px 0 18px;line-height:1.7">합계가 100%가 되도록 슬라이더를 조정하세요</div>
         <div class="fg"><div class="fl">🏠 고정비 (월세·보험·통신) <em id="p0">30%</em></div><input type="range" id="s0" min="0" max="80" value="30" oninput="calc()"></div>
         <div class="fg"><div class="fl">🛒 변동비 (식비·교통·생활) <em id="p1">25%</em></div><input type="range" id="s1" min="0" max="80" value="25" oninput="calc()"></div>
         <div class="fg"><div class="fl">🏦 저축 (예·적금·비상금) <em id="p2">20%</em></div><input type="range" id="s2" min="0" max="80" value="20" oninput="calc()"></div>
@@ -56,13 +55,13 @@ footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
         <div class="warn" id="warn">⚠ 현재 합계 <strong id="tot">100</strong>% · 100%로 맞춰주세요</div>
       </div>
       <div>
-        <div style="position:relative;height:280px"><canvas id="ch" role="img" aria-label="지출 배분 도넛 차트">지출 배분 도넛 차트</canvas></div>
-        <div id="leg" style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px"></div>
+        <div style="position:relative;height:270px"><canvas id="ch" role="img" aria-label="지출 배분 도넛 차트">지출 배분 도넛 차트</canvas></div>
+        <div id="leg" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:14px"></div>
       </div>
     </div>
   </div>
 </div>
-<footer>Claude AI · 직장인 스마트 대시보드 2025</footer>
+<footer>Made with Claude AI · 직장인 스마트 대시보드 2025</footer>
 <script>
 const L=['🏠 고정비','🛒 변동비','🏦 저축','📈 투자','📚 자기계발'];
 const C=['#4B45C4','#1D9E75','#F4B93A','#D85A30','#5BB8E0'];
@@ -70,15 +69,23 @@ let ch;
 function fs(n){if(Math.abs(n)>=100000000)return(n/100000000).toFixed(1)+'억';if(Math.abs(n)>=10000)return Math.round(n/10000).toLocaleString()+'만';return Math.round(n).toLocaleString();}
 function calc(){
   const sal=parseFloat(document.getElementById('salary').value)||0;
-  const pcts=[0,1,2,3,4].map(i=>parseInt(document.getElementById('s'+i).value)||0);
-  const tot=pcts.reduce((a,b)=>a+b,0);
-  for(let i=0;i<5;i++) document.getElementById('p'+i).textContent=pcts[i]+'%';
+  const p=[0,1,2,3,4].map(i=>parseInt(document.getElementById('s'+i).value)||0);
+  const tot=p.reduce((a,b)=>a+b,0);
+  p.forEach((v,i)=>document.getElementById('p'+i).textContent=v+'%');
   const w=document.getElementById('warn');
-  if(tot!==100){w.style.display='block';document.getElementById('tot').textContent=tot;}else w.style.display='none';
-  const amt=pcts.map(p=>sal*p/100);
+  if(tot!==100){w.style.display='block';document.getElementById('tot').textContent=tot;}
+  else w.style.display='none';
+  const amt=p.map(v=>sal*v/100);
   if(ch)ch.destroy();
-  ch=new Chart(document.getElementById('ch'),{type:'doughnut',data:{labels:L,datasets:[{data:amt,backgroundColor:C,borderWidth:2.5,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+fs(ctx.raw)+'원 ('+pcts[ctx.dataIndex]+'%)'}}}}}); 
-  document.getElementById('leg').innerHTML=L.map((lb,i)=>'<div style="display:flex;align-items:center;gap:6px;font-size:12px"><span style="width:10px;height:10px;border-radius:3px;background:'+C[i]+';flex-shrink:0"></span><span style="color:#777">'+lb+'</span><span style="margin-left:auto;font-weight:800">'+fs(amt[i])+'원</span></div>').join('');
+  ch=new Chart(document.getElementById('ch'),{
+    type:'doughnut',
+    data:{labels:L,datasets:[{data:amt,backgroundColor:C,borderWidth:2.5,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+fs(ctx.raw)+'원 ('+p[ctx.dataIndex]+'%)'}}}}
+  });
+  document.getElementById('leg').innerHTML=L.map((lb,i)=>
+    '<div class="leg-row"><span class="leg-dot" style="background:'+C[i]+'"></span><span style="color:#777;flex:1">'+lb+'</span><span style="font-weight:800">'+fs(amt[i])+'원</span></div>'
+  ).join('');
 }
 calc();
 </script>
