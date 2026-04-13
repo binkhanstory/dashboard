@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>운동 루틴 트래커</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif;background:#F2F2F7;color:#18181B;min-height:100vh}
+nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.75}
+.nb{font-size:11px;color:#ccc;font-weight:600}
+.wrap{max-width:960px;margin:0 auto;padding:32px 24px}
+.ph{margin-bottom:26px}.ph h1{font-size:25px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
+.card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media(max-width:660px){.g2{grid-template-columns:1fr}}
+.wk-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+.wk-tbl th{font-weight:700;color:#aaa;font-size:11px;padding:7px 4px;text-align:center}
+.wk-tbl td{padding:7px 4px;text-align:center}
+.wk-tbl td:first-child{text-align:left;font-weight:700;padding-right:10px;white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:middle}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;background:#F7F7FC;border-radius:8px;padding:5px 11px;font-weight:600}
+input[type=checkbox]{width:17px;height:17px;cursor:pointer}
+footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
+</style>
+</head>
+<body>
+<nav>
+  <a class="bk" href="index.html">← 대시보드 모음</a>
+  <span class="nb">04 · HEALTH · Claude AI</span>
+</nav>
+<div class="wrap">
+  <div class="ph">
+    <h1>🏋️ 운동 루틴 트래커</h1>
+    <p>이번 주 완료한 운동을 체크하면 레이더 차트와 막대 그래프로 운동 균형을 실시간 확인합니다</p>
+  </div>
+  <div class="card">
+    <div class="g2">
+      <div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;font-size:12px;font-weight:700">
+          <span><span class="dot" style="background:#4B45C4"></span>상체</span>
+          <span><span class="dot" style="background:#1D9E75"></span>하체</span>
+          <span><span class="dot" style="background:#F4B93A"></span>코어</span>
+          <span><span class="dot" style="background:#D85A30"></span>유산소</span>
+        </div>
+        <div style="font-size:12px;color:#bbb;margin-bottom:14px;line-height:1.7">요일별로 완료한 운동 부위에 체크하세요</div>
+        <table class="wk-tbl">
+          <thead><tr><th></th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th></tr></thead>
+          <tbody id="wkb"></tbody>
+        </table>
+        <div id="wks" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px"></div>
+      </div>
+      <div>
+        <div style="position:relative;height:240px;margin-bottom:14px"><canvas id="chR" role="img" aria-label="운동 부위별 균형 레이더 차트">운동 균형 레이더</canvas></div>
+        <div style="font-size:11px;font-weight:700;color:#aaa;margin-bottom:8px">요일별 운동 종류 수</div>
+        <div style="position:relative;height:155px"><canvas id="chB" role="img" aria-label="요일별 운동 횟수 막대 차트">요일별 횟수</canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>Claude AI · 직장인 스마트 대시보드 2025</footer>
+<script>
+const T=['상체','하체','코어','유산소'];
+const C=['#4B45C4','#1D9E75','#F4B93A','#D85A30'];
+const D=['월','화','수','목','금','토','일'];
+let chR,chB;
+function build(){
+  const tbody=document.getElementById('wkb');
+  tbody.innerHTML=T.map((t,ti)=>
+    '<tr><td><span class="dot" style="background:'+C[ti]+'"></span>'+t+'</td>'+
+    D.map((_,di)=>'<td><input type="checkbox" id="wk-'+ti+'-'+di+'" style="accent-color:'+C[ti]+'" onchange="update()"></td>').join('')+
+    '</tr>'
+  ).join('');
+}
+function update(){
+  const tCnt=T.map((_,ti)=>D.filter((_,di)=>document.getElementById('wk-'+ti+'-'+di)?.checked).length);
+  const dCnt=D.map((_,di)=>T.filter((_,ti)=>document.getElementById('wk-'+ti+'-'+di)?.checked).length);
+  const total=tCnt.reduce((a,b)=>a+b,0);
+  document.getElementById('wks').innerHTML=
+    T.map((t,i)=>'<span class="tag"><span class="dot" style="background:'+C[i]+'"></span>'+t+' '+tCnt[i]+'회</span>').join('')+
+    '<span class="tag" style="background:#ECEBFF;color:#4B45C4;font-weight:800">총 '+total+'회</span>';
+  if(chR)chR.destroy();
+  chR=new Chart(document.getElementById('chR'),{type:'radar',data:{labels:T,datasets:[{label:'운동 횟수',data:tCnt,borderColor:'#4B45C4',backgroundColor:'rgba(75,69,196,.15)',pointBackgroundColor:'#4B45C4',pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:7,ticks:{stepSize:1,font:{size:10}},pointLabels:{font:{size:13,weight:'bold'}}}}}});
+  if(chB)chB.destroy();
+  chB=new Chart(document.getElementById('chB'),{type:'bar',data:{labels:D,datasets:[{label:'운동 종류',data:dCnt,backgroundColor:dCnt.map(v=>v>0?'#4B45C4':'#E8E8F0'),borderRadius:7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:4,ticks:{stepSize:1,font:{size:10}},grid:{color:'#F0F0F6'}},x:{ticks:{font:{size:13,weight:'bold'}},grid:{display:false}}}}});
+}
+build();
+update();
+</script>
+</body>
+</html>

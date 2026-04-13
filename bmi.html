@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>체중 · BMI 관리</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif;background:#F2F2F7;color:#18181B;min-height:100vh}
+nav{background:#fff;border-bottom:1px solid #E8E8EE;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.bk{font-size:13px;font-weight:700;color:#4B45C4;text-decoration:none}.bk:hover{opacity:.75}
+.nb{font-size:11px;color:#ccc;font-weight:600}
+.wrap{max-width:960px;margin:0 auto;padding:32px 24px}
+.ph{margin-bottom:26px}.ph h1{font-size:25px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em}.ph p{font-size:13px;color:#999}
+.card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:660px){.g2,.g3{grid-template-columns:1fr}}
+.st{background:#F7F7FC;border-radius:12px;padding:14px 18px;text-align:center}
+.lb{font-size:11px;color:#aaa;margin-bottom:6px;font-weight:600}
+.vl{font-size:19px;font-weight:800}
+.fg{margin-bottom:17px}
+.fl{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#555;margin-bottom:7px}
+input[type=number]{width:100%;padding:10px 14px;border:1.5px solid #E8E8F0;border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:#18181B}
+input[type=number]:focus{border-color:#4B45C4}
+.rp{background:#F0F0FF;border:1.5px solid #DDDCFF;border-radius:12px;padding:16px 20px;margin-top:16px}
+.bmi-bar{height:24px;border-radius:12px;background:linear-gradient(to right,#5DB8EA 0%,#4CC98A 30%,#F5C242 60%,#E86060 100%);position:relative;margin:8px 0 4px}
+.bmi-pin{position:absolute;top:-5px;width:4px;height:34px;background:#18181B;border-radius:3px;transform:translateX(-50%);transition:left .5s ease;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.pb-wrap{margin-bottom:12px}
+.pb-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.pb-bg{height:9px;background:#E8E8F0;border-radius:5px;overflow:hidden}
+.pb-fill{height:100%;border-radius:5px;transition:width .6s ease}
+footer{text-align:center;padding:28px;font-size:12px;color:#ccc}
+</style>
+</head>
+<body>
+<nav>
+  <a class="bk" href="index.html">← 대시보드 모음</a>
+  <span class="nb">05 · HEALTH · Claude AI</span>
+</nav>
+<div class="wrap">
+  <div class="ph">
+    <h1>⚖️ 체중 · BMI 관리</h1>
+    <p>키와 현재·목표 체중을 입력하면 BMI 단계·목표 달성률·체중 추이를 확인합니다</p>
+  </div>
+  <div class="card">
+    <div class="g2">
+      <div>
+        <div class="fg"><div class="fl">키 (cm)</div><input type="number" id="bh" value="170" oninput="calc()"></div>
+        <div class="fg"><div class="fl">현재 체중 (kg)</div><input type="number" id="bw" value="70" step="0.1" oninput="calc()"></div>
+        <div class="fg"><div class="fl">목표 체중 (kg)</div><input type="number" id="bg" value="65" step="0.1" oninput="calc()"></div>
+        <div class="rp">
+          <div class="g3" style="gap:8px">
+            <div class="st"><div class="lb">나의 BMI</div><div class="vl" id="bn">-</div><div style="font-size:11px;color:#bbb;margin-top:3px" id="bs">-</div></div>
+            <div class="st"><div class="lb">표준 체중</div><div class="vl" id="bi" style="font-size:16px">-</div></div>
+            <div class="st"><div class="lb">목표까지</div><div class="vl" id="bg2" style="font-size:16px">-</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:800;color:#aaa;margin-bottom:5px">BMI 단계</div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:#bbb"><span>저체중</span><span>정상</span><span>과체중</span><span>비만</span></div>
+        <div class="bmi-bar"><div class="bmi-pin" id="bp" style="left:50%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:#bbb"><span>~18.5</span><span>23</span><span>25</span><span>30+</span></div>
+        <div style="margin-top:22px">
+          <div style="font-size:11px;font-weight:800;color:#aaa;margin-bottom:10px">목표 체중 달성 진행률</div>
+          <div id="prog"></div>
+        </div>
+        <div style="position:relative;height:148px;margin-top:16px"><canvas id="ch" role="img" aria-label="최근 8일 체중 변화 추이 차트">체중 변화 추이</canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>Claude AI · 직장인 스마트 대시보드 2025</footer>
+<script>
+let ch,hist;
+function calc(){
+  const h=parseFloat(document.getElementById('bh').value)||170;
+  const w=parseFloat(document.getElementById('bw').value)||70;
+  const g=parseFloat(document.getElementById('bg').value)||65;
+  const hm=h/100;
+  const bmi=w/(hm*hm);
+  const ideal=22*hm*hm;
+  let status,sc;
+  if(bmi<18.5){status='저체중';sc='#5DB8EA';}
+  else if(bmi<23){status='정상 ✓';sc='#1D9E75';}
+  else if(bmi<25){status='과체중';sc='#F4B93A';}
+  else{status='비만';sc='#E06060';}
+  document.getElementById('bn').textContent=bmi.toFixed(1);
+  document.getElementById('bn').style.color=sc;
+  document.getElementById('bs').textContent=status;
+  document.getElementById('bi').textContent=ideal.toFixed(1)+'kg';
+  const diff=parseFloat((w-g).toFixed(1));
+  document.getElementById('bg2').textContent=(diff>0?'-':'+')+Math.abs(diff)+'kg';
+  const pin=Math.min(100,Math.max(0,(bmi-15)/20*100));
+  document.getElementById('bp').style.left=pin+'%';
+  const absDiff=Math.abs(diff);
+  const prog=Math.min(100,Math.max(0,Math.round((1-absDiff/(absDiff+3))*100)));
+  document.getElementById('prog').innerHTML=
+    '<div class="pb-wrap"><div class="pb-top"><strong style="font-size:12px">목표 달성 진행률</strong><span style="font-size:12px;color:'+sc+';font-weight:800">'+prog+'%</span></div><div class="pb-bg"><div class="pb-fill" style="width:'+prog+'%;background:'+sc+'"></div></div></div>'+
+    '<div style="font-size:12px;color:#bbb;margin-top:5px">현재 '+w+'kg → 목표 '+g+'kg · 차이 '+absDiff+'kg</div>';
+  if(!hist){hist=[];for(let i=7;i>=1;i--)hist.push(+(w+(Math.random()-.38)*2.2).toFixed(1));}
+  const data=[...hist,w];
+  if(ch)ch.destroy();
+  ch=new Chart(document.getElementById('ch'),{type:'line',data:{labels:['7일전','6일전','5일전','4일전','3일전','2일전','어제','오늘'],datasets:[{label:'체중',data:data,borderColor:'#4B45C4',backgroundColor:'rgba(75,69,196,.09)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#4B45C4'},{label:'목표',data:Array(8).fill(g),borderColor:'#1D9E75',borderDash:[6,4],pointRadius:0,backgroundColor:'transparent'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'kg',font:{size:10}},grid:{color:'#F0F0F6'}},x:{ticks:{font:{size:10},maxTicksLimit:6},grid:{display:false}}}}});
+}
+calc();
+</script>
+</body>
+</html>
